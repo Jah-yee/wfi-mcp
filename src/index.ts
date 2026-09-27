@@ -151,8 +151,12 @@ function renderQuotaFooter(quota: Quota | null): string {
   const modeLabel = quota.mode === "paid" ? "PAID (credits)" : "FREE";
   const pieces = [
     `mode: ${modeLabel}`,
-    `today: ${quota.used_today}/${quota.limit}`,
-    `credits balance: ${quota.balance.toLocaleString()}`,
+    ...(quota.used_today != null && quota.limit != null
+      ? [`today: ${quota.used_today}/${quota.limit}`]
+      : []),
+    ...(quota.balance != null
+      ? [`credits balance: ${Number(quota.balance).toLocaleString()}`]
+      : []),
   ];
   return `\n\n_${pieces.join(" · ")}_`;
 }
